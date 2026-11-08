@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Calendar – Demo</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%236f8b72' width='100' height='100' rx='15'/%3E%3Ctext fill='white' x='50' y='68' font-size='55' text-anchor='middle' font-family='Arial'%3E24%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../src/styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <span class="logout-button" style="cursor: default; pointer-events: none;">Demo</span>
+        <h1>Video Calendar</h1>
+    </header>
+    <p class="intro-text">
+        Static demonstration version (no PHP API &ndash; progress is stored in your browser's localStorage).
+        Open one door each day, watch the video and leave your rating and a short comment.
+    </p>
+    <div class="calendar" id="calendar"><em>Loading…</em></div>
+
+    <script>
+        // Demo data – mirrors src/data.csv, so the demo works without the PHP backend.
+        // Paths are relative to docs/, hence ../src/...
+        const DEMO_DOORS = [
+            { day: '1',  title: 'Mirror Lake Aurora',      url: 'https://example.com/video1',  thumbnail: '../src/thumbnails/01.png', opened_date: '2026-11-01T12:00:00.000Z', rating: '4', comment: 'What a great video!' },
+            { day: '2',  title: 'Wild Fjord Night',        url: 'https://example.com/video2',  thumbnail: '../src/thumbnails/02.png', opened_date: '2026-11-02T12:00:00.000Z', rating: '5', comment: 'Wow, this one is even better!' },
+            { day: '3',  title: 'Forest Aurora Glow',      url: 'https://example.com/video3',  thumbnail: '../src/thumbnails/03.png', opened_date: '', rating: '', comment: '' },
+            { day: '4',  title: 'Moonlit Snow Hills',      url: 'https://example.com/video4',  thumbnail: '../src/thumbnails/04.png', opened_date: '', rating: '', comment: '' },
+            { day: '5',  title: 'Rocky Shore Glow',        url: 'https://example.com/video5',  thumbnail: '../src/thumbnails/05.png', opened_date: '', rating: '', comment: '' },
+            { day: '6',  title: 'Violet Lake Reflection',  url: 'https://example.com/video6',  thumbnail: '../src/thumbnails/06.png', opened_date: '', rating: '', comment: '' },
+            { day: '7',  title: 'Rocky Coast Aurora',      url: 'https://example.com/video7',  thumbnail: '../src/thumbnails/07.png', opened_date: '', rating: '', comment: '' },
+            { day: '8',  title: 'Glacier Lagoon Lights',   url: 'https://example.com/video8',  thumbnail: '../src/thumbnails/08.png', opened_date: '', rating: '', comment: '' },
+            { day: '9',  title: 'Frozen Waterfall',        url: 'https://example.com/video9',  thumbnail: '../src/thumbnails/09.png', opened_date: '', rating: '', comment: '' },
+            { day: '10', title: 'Snowy River Aurora',      url: 'https://example.com/video10', thumbnail: '../src/thumbnails/10.png', opened_date: '', rating: '', comment: '' },
+            { day: '11', title: 'Milky Way Peaks',         url: 'https://example.com/video11', thumbnail: '../src/thumbnails/11.png', opened_date: '', rating: '', comment: '' },
+            { day: '12', title: 'Forest Lake Reflection',  url: 'https://example.com/video12', thumbnail: '../src/thumbnails/12.png', opened_date: '', rating: '', comment: '' },
+            { day: '13', title: 'Violet Peaks Glow',       url: 'https://example.com/video13', thumbnail: '../src/thumbnails/13.png', opened_date: '', rating: '', comment: '' },
+            { day: '14', title: 'Frozen Lake Shore',       url: 'https://example.com/video14', thumbnail: '../src/thumbnails/14.png', opened_date: '', rating: '', comment: '' },
+            { day: '15', title: 'Lone Tree Aurora',        url: 'https://example.com/video15', thumbnail: '../src/thumbnails/15.png', opened_date: '', rating: '', comment: '' },
+            { day: '16', title: 'Stormy Shore Aurora',     url: 'https://example.com/video16', thumbnail: '../src/thumbnails/16.png', opened_date: '', rating: '', comment: '' },
+            { day: '17', title: 'Ice Beach Aurora',        url: 'https://example.com/video17', thumbnail: '../src/thumbnails/17.png', opened_date: '', rating: '', comment: '' },
+            { day: '18', title: 'Snowy Ridge Aurora',      url: 'https://example.com/video18', thumbnail: '../src/thumbnails/18.png', opened_date: '', rating: '', comment: '' },
+            { day: '19', title: 'Frozen River Valley',     url: 'https://example.com/video19', thumbnail: '../src/thumbnails/19.png', opened_date: '', rating: '', comment: '' },
+            { day: '20', title: 'Icy Lake Mirror',         url: 'https://example.com/video20', thumbnail: '../src/thumbnails/20.png', opened_date: '', rating: '', comment: '' },
+            { day: '21', title: 'Purple Hills Glow',       url: 'https://example.com/video21', thumbnail: '../src/thumbnails/21.png', opened_date: '', rating: '', comment: '' },
+            { day: '22', title: 'Starry Snow Plain',       url: 'https://example.com/video22', thumbnail: '../src/thumbnails/22.png', opened_date: '', rating: '', comment: '' },
+            { day: '23', title: 'Aurora Panorama',         url: 'https://example.com/video23', thumbnail: '../src/thumbnails/23.png', opened_date: '', rating: '', comment: '' },
+            { day: '24', title: 'Arctic Wonderland',       url: 'https://example.com/video24', thumbnail: '../src/thumbnails/24.png', opened_date: '', rating: '', comment: '' }
+        ];
+
+        const STORAGE_KEY = 'video-calendar-demo';
+
+        // Client-side state: one entry per door with
+        // day, title, url, thumbnail, opened_date, rating, comment.
+        // A door counts as opened when opened_date is not empty.
+        const totalDoors = 24;
+        let nextDoorToOpen = 1;
+        let doors = [];
+
+        function isOpened(index) {
+            return !!(doors[index] && doors[index].opened_date);
+        }
+
+        // Fill in any missing doors and recalculate nextDoorToOpen
+        function initDoors() {
+            for (let i = 0; i < totalDoors; i++) {
+                if (!doors[i]) {
+                    doors[i] = {
+                        day: (i + 1).toString(),
+                        title: `Video ${i + 1}`,
+                        url: `https://example.com/video${i + 1}`,
+                        thumbnail: `../src/thumbnails/${String(i + 1).padStart(2, '0')}.png`,
+                        opened_date: '',
+                        rating: '',
+                        comment: ''
+                    };
+                }
+            }
+
+            let maxOpened = 0;
+            doors.forEach((door, index) => {
+                if (door.opened_date && index + 1 > maxOpened) {
+                    maxOpened = index + 1;
+                }
+            });
+            nextDoorToOpen = maxOpened + 1;
+            if (nextDoorToOpen < 1) nextDoorToOpen = 1;
+        }
+
+        // Load doors: demo data first, then any locally saved progress
+        function loadData() {
+            doors = DEMO_DOORS.map(d => ({ ...d }));
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+                if (saved && Array.isArray(saved.doors)) {
+                    saved.doors.forEach((s, i) => {
+                        if (doors[i] && s) {
+                            doors[i].opened_date = s.opened_date || '';
+                            doors[i].rating = s.rating || '';
+                            doors[i].comment = s.comment || '';
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not read saved demo progress:', e);
+            }
+        }
+
+        // Save progress to localStorage (demo replacement for POST api.php)
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    doors: doors.map((door, index) => ({
+                        day: (index + 1).toString(),
+                        opened_date: door.opened_date || '',
+                        rating: door.rating || '',
+                        comment: door.comment || ''
+                    }))
+                }));
+            } catch (e) {
+                console.error('Error saving demo data:', e);
+            }
+        }
+
+        // Create the doors in the DOM
+        function createDoors() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            for (let i = 0; i < totalDoors; i++) {
+                const door = document.createElement('div');
+                const video = doors[i] || {};
+                const wasOpened = isOpened(i);
+                const isLocked = i + 1 < nextDoorToOpen;
+
+                door.className = `door ${wasOpened ? 'opened' : ''} ${isLocked ? 'locked' : ''}`;
+
+                if (wasOpened) {
+                    const thumbnailPath = video.thumbnail || `../src/thumbnails/${String(i + 1).padStart(2, '0')}.png`;
+                    const videoTitle = video.title || `Video ${i + 1}`;
+                    const videoUrl = video.url || `https://example.com/video${i + 1}`;
+
+                    door.innerHTML = `
+                        <div class="door-number">${i + 1}</div>
+                        <div class="video-title">${videoTitle}</div>
+                        <a href="${videoUrl}" target="_blank" class="video-preview" title="${videoTitle}">
+                            <img src="${thumbnailPath}" alt="Preview for ${videoTitle}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23333%22 width=%22100%22 height=%22100%22/%3E%3Ctext fill=%22white%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EVideo ${i + 1}%3C/text%3E%3C/svg%3E';">
+                        </a>
+                        <div class="rating" id="rating-${i}">
+                            ${[1, 2, 3, 4, 5].map(n => `
+                                <button onclick="rateDoor(${i}, ${n})" ${doors[i].rating == n ? 'class="selected"' : ''}>${n}</button>
+                            `).join('')}
+                        </div>
+                        <div class="comment">
+                            <textarea id="comment-${i}" placeholder="Your comment...">${(doors[i].comment || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                            <button class="save-comment" onclick="saveComment(${i})">Save</button>
+                        </div>
+                    `;
+                } else {
+                    door.innerHTML = `
+                        <div class="door-number">${i + 1}</div>
+                    `;
+                }
+
+                if (i + 1 === nextDoorToOpen || wasOpened) {
+                    door.onclick = () => openDoor(i);
+                }
+
+                calendar.appendChild(door);
+            }
+
+            alignTitleHeights();
+        }
+
+        // Align title heights per calendar row: every opened door in a row
+        // gets the height of the tallest title in that row, so thumbnails
+        // and ratings start at the same vertical position.
+        function alignTitleHeights() {
+            const openedDoors = document.querySelectorAll('.door.opened');
+            const titles = [];
+            openedDoors.forEach(door => {
+                const title = door.querySelector('.video-title');
+                if (title) {
+                    title.style.height = 'auto';
+                    titles.push({ door, title });
+                }
+            });
+
+            // Group doors by row (same vertical position in the grid)
+            const rows = new Map();
+            titles.forEach(({ door, title }) => {
+                const y = door.offsetTop;
+                if (!rows.has(y)) {
+                    rows.set(y, []);
+                }
+                rows.get(y).push(title);
+            });
+
+            rows.forEach(rowTitles => {
+                const maxHeight = Math.max(...rowTitles.map(t => t.offsetHeight));
+                rowTitles.forEach(t => {
+                    t.style.height = maxHeight + 'px';
+                });
+            });
+        }
+
+        // Open a door
+        function openDoor(index) {
+            if (index + 1 === nextDoorToOpen) {
+                doors[index].opened_date = new Date().toISOString();
+                nextDoorToOpen++;
+                saveData();
+                createDoors();
+            }
+        }
+
+        // Rate a door
+        function rateDoor(doorIndex, rating) {
+            doors[doorIndex].rating = rating;
+            saveData();
+            createDoors();
+        }
+
+        // Save the comment of a door
+        function saveComment(doorIndex) {
+            const field = document.getElementById(`comment-${doorIndex}`);
+            if (!field) return;
+            doors[doorIndex].comment = field.value;
+            saveData();
+        }
+
+        // Re-align when the window is resized (column count may change)
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(alignTitleHeights, 100);
+        });
+
+        // Initialize the page
+        function init() {
+            loadData();
+            initDoors();
+            createDoors();
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
