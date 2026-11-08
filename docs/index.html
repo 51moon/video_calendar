@@ -19,33 +19,32 @@
     <div class="calendar" id="calendar"><em>Loading…</em></div>
 
     <script>
-        // Demo data – mirrors src/data.csv, so the demo works without the PHP backend.
-        // Paths are relative to docs/, hence ../src/...
+        // Demo data – mirrors docs/data.csv, so the demo works without the PHP backend.
         const DEMO_DOORS = [
-            { day: '1',  title: 'Mirror Lake Aurora',      url: 'https://example.com/video1',  thumbnail: '../src/thumbnails/01.png', opened_date: '2026-11-01T12:00:00.000Z', rating: '4', comment: 'What a great video!' },
-            { day: '2',  title: 'Wild Fjord Night',        url: 'https://example.com/video2',  thumbnail: '../src/thumbnails/02.png', opened_date: '2026-11-02T12:00:00.000Z', rating: '5', comment: 'Wow, this one is even better!' },
-            { day: '3',  title: 'Forest Aurora Glow',      url: 'https://example.com/video3',  thumbnail: '../src/thumbnails/03.png', opened_date: '', rating: '', comment: '' },
-            { day: '4',  title: 'Moonlit Snow Hills',      url: 'https://example.com/video4',  thumbnail: '../src/thumbnails/04.png', opened_date: '', rating: '', comment: '' },
-            { day: '5',  title: 'Rocky Shore Glow',        url: 'https://example.com/video5',  thumbnail: '../src/thumbnails/05.png', opened_date: '', rating: '', comment: '' },
-            { day: '6',  title: 'Violet Lake Reflection',  url: 'https://example.com/video6',  thumbnail: '../src/thumbnails/06.png', opened_date: '', rating: '', comment: '' },
-            { day: '7',  title: 'Rocky Coast Aurora',      url: 'https://example.com/video7',  thumbnail: '../src/thumbnails/07.png', opened_date: '', rating: '', comment: '' },
-            { day: '8',  title: 'Glacier Lagoon Lights',   url: 'https://example.com/video8',  thumbnail: '../src/thumbnails/08.png', opened_date: '', rating: '', comment: '' },
-            { day: '9',  title: 'Frozen Waterfall',        url: 'https://example.com/video9',  thumbnail: '../src/thumbnails/09.png', opened_date: '', rating: '', comment: '' },
-            { day: '10', title: 'Snowy River Aurora',      url: 'https://example.com/video10', thumbnail: '../src/thumbnails/10.png', opened_date: '', rating: '', comment: '' },
-            { day: '11', title: 'Milky Way Peaks',         url: 'https://example.com/video11', thumbnail: '../src/thumbnails/11.png', opened_date: '', rating: '', comment: '' },
-            { day: '12', title: 'Forest Lake Reflection',  url: 'https://example.com/video12', thumbnail: '../src/thumbnails/12.png', opened_date: '', rating: '', comment: '' },
-            { day: '13', title: 'Violet Peaks Glow',       url: 'https://example.com/video13', thumbnail: '../src/thumbnails/13.png', opened_date: '', rating: '', comment: '' },
-            { day: '14', title: 'Frozen Lake Shore',       url: 'https://example.com/video14', thumbnail: '../src/thumbnails/14.png', opened_date: '', rating: '', comment: '' },
-            { day: '15', title: 'Lone Tree Aurora',        url: 'https://example.com/video15', thumbnail: '../src/thumbnails/15.png', opened_date: '', rating: '', comment: '' },
-            { day: '16', title: 'Stormy Shore Aurora',     url: 'https://example.com/video16', thumbnail: '../src/thumbnails/16.png', opened_date: '', rating: '', comment: '' },
-            { day: '17', title: 'Ice Beach Aurora',        url: 'https://example.com/video17', thumbnail: '../src/thumbnails/17.png', opened_date: '', rating: '', comment: '' },
-            { day: '18', title: 'Snowy Ridge Aurora',      url: 'https://example.com/video18', thumbnail: '../src/thumbnails/18.png', opened_date: '', rating: '', comment: '' },
-            { day: '19', title: 'Frozen River Valley',     url: 'https://example.com/video19', thumbnail: '../src/thumbnails/19.png', opened_date: '', rating: '', comment: '' },
-            { day: '20', title: 'Icy Lake Mirror',         url: 'https://example.com/video20', thumbnail: '../src/thumbnails/20.png', opened_date: '', rating: '', comment: '' },
-            { day: '21', title: 'Purple Hills Glow',       url: 'https://example.com/video21', thumbnail: '../src/thumbnails/21.png', opened_date: '', rating: '', comment: '' },
-            { day: '22', title: 'Starry Snow Plain',       url: 'https://example.com/video22', thumbnail: '../src/thumbnails/22.png', opened_date: '', rating: '', comment: '' },
-            { day: '23', title: 'Aurora Panorama',         url: 'https://example.com/video23', thumbnail: '../src/thumbnails/23.png', opened_date: '', rating: '', comment: '' },
-            { day: '24', title: 'Arctic Wonderland',       url: 'https://example.com/video24', thumbnail: '../src/thumbnails/24.png', opened_date: '', rating: '', comment: '' }
+            { day: '1',  title: 'Mirror Lake Aurora',      url: 'https://example.com/video1',  thumbnail: 'thumbnails/01.png', opened_date: '2026-11-01T12:00:00.000Z', rating: '4', comment: 'What a great video!' },
+            { day: '2',  title: 'Wild Fjord Night',        url: 'https://example.com/video2',  thumbnail: 'thumbnails/02.png', opened_date: '2026-11-02T12:00:00.000Z', rating: '5', comment: 'Wow, this one is even better!' },
+            { day: '3',  title: 'Forest Aurora Glow',      url: 'https://example.com/video3',  thumbnail: 'thumbnails/03.png', opened_date: '', rating: '', comment: '' },
+            { day: '4',  title: 'Moonlit Snow Hills',      url: 'https://example.com/video4',  thumbnail: 'thumbnails/04.png', opened_date: '', rating: '', comment: '' },
+            { day: '5',  title: 'Rocky Shore Glow',        url: 'https://example.com/video5',  thumbnail: 'thumbnails/05.png', opened_date: '', rating: '', comment: '' },
+            { day: '6',  title: 'Violet Lake Reflection',  url: 'https://example.com/video6',  thumbnail: 'thumbnails/06.png', opened_date: '', rating: '', comment: '' },
+            { day: '7',  title: 'Rocky Coast Aurora',      url: 'https://example.com/video7',  thumbnail: 'thumbnails/07.png', opened_date: '', rating: '', comment: '' },
+            { day: '8',  title: 'Glacier Lagoon Lights',   url: 'https://example.com/video8',  thumbnail: 'thumbnails/08.png', opened_date: '', rating: '', comment: '' },
+            { day: '9',  title: 'Frozen Waterfall',        url: 'https://example.com/video9',  thumbnail: 'thumbnails/09.png', opened_date: '', rating: '', comment: '' },
+            { day: '10', title: 'Snowy River Aurora',      url: 'https://example.com/video10', thumbnail: 'thumbnails/10.png', opened_date: '', rating: '', comment: '' },
+            { day: '11', title: 'Milky Way Peaks',         url: 'https://example.com/video11', thumbnail: 'thumbnails/11.png', opened_date: '', rating: '', comment: '' },
+            { day: '12', title: 'Forest Lake Reflection',  url: 'https://example.com/video12', thumbnail: 'thumbnails/12.png', opened_date: '', rating: '', comment: '' },
+            { day: '13', title: 'Violet Peaks Glow',       url: 'https://example.com/video13', thumbnail: 'thumbnails/13.png', opened_date: '', rating: '', comment: '' },
+            { day: '14', title: 'Frozen Lake Shore',       url: 'https://example.com/video14', thumbnail: 'thumbnails/14.png', opened_date: '', rating: '', comment: '' },
+            { day: '15', title: 'Lone Tree Aurora',        url: 'https://example.com/video15', thumbnail: 'thumbnails/15.png', opened_date: '', rating: '', comment: '' },
+            { day: '16', title: 'Stormy Shore Aurora',     url: 'https://example.com/video16', thumbnail: 'thumbnails/16.png', opened_date: '', rating: '', comment: '' },
+            { day: '17', title: 'Ice Beach Aurora',        url: 'https://example.com/video17', thumbnail: 'thumbnails/17.png', opened_date: '', rating: '', comment: '' },
+            { day: '18', title: 'Snowy Ridge Aurora',      url: 'https://example.com/video18', thumbnail: 'thumbnails/18.png', opened_date: '', rating: '', comment: '' },
+            { day: '19', title: 'Frozen River Valley',     url: 'https://example.com/video19', thumbnail: 'thumbnails/19.png', opened_date: '', rating: '', comment: '' },
+            { day: '20', title: 'Icy Lake Mirror',         url: 'https://example.com/video20', thumbnail: 'thumbnails/20.png', opened_date: '', rating: '', comment: '' },
+            { day: '21', title: 'Purple Hills Glow',       url: 'https://example.com/video21', thumbnail: 'thumbnails/21.png', opened_date: '', rating: '', comment: '' },
+            { day: '22', title: 'Starry Snow Plain',       url: 'https://example.com/video22', thumbnail: 'thumbnails/22.png', opened_date: '', rating: '', comment: '' },
+            { day: '23', title: 'Aurora Panorama',         url: 'https://example.com/video23', thumbnail: 'thumbnails/23.png', opened_date: '', rating: '', comment: '' },
+            { day: '24', title: 'Arctic Wonderland',       url: 'https://example.com/video24', thumbnail: 'thumbnails/24.png', opened_date: '', rating: '', comment: '' }
         ];
 
         const STORAGE_KEY = 'video-calendar-demo';
@@ -69,7 +68,7 @@
                         day: (i + 1).toString(),
                         title: `Video ${i + 1}`,
                         url: `https://example.com/video${i + 1}`,
-                        thumbnail: `../src/thumbnails/${String(i + 1).padStart(2, '0')}.png`,
+                        thumbnail: `thumbnails/${String(i + 1).padStart(2, '0')}.png`,
                         opened_date: '',
                         rating: '',
                         comment: ''
@@ -136,7 +135,7 @@
                 door.className = `door ${wasOpened ? 'opened' : ''} ${isLocked ? 'locked' : ''}`;
 
                 if (wasOpened) {
-                    const thumbnailPath = video.thumbnail || `../src/thumbnails/${String(i + 1).padStart(2, '0')}.png`;
+                    const thumbnailPath = video.thumbnail || `thumbnails/${String(i + 1).padStart(2, '0')}.png`;
                     const videoTitle = video.title || `Video ${i + 1}`;
                     const videoUrl = video.url || `https://example.com/video${i + 1}`;
 

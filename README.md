@@ -2,7 +2,8 @@
 
 An interactive (advent) calendar for videos with rating functionality, built as a static website with a small PHP API.
 
-![Screenshot](src/screenshot.png)
+## [Demo Website](https://51moon.github.io/video_calendar/)
+[![Demo Website](docs/screenshot.png)](https://51moon.github.io/video_calendar/)
 
 ## Features
 
@@ -19,7 +20,7 @@ An interactive (advent) calendar for videos with rating functionality, built as 
 
 - **Frontend**: Static HTML/CSS/JavaScript (no build step)
 - **API**: Single PHP script (`api.php`)
-- **Data Storage**: `src/data.csv` (flat-file, written with `flock` + `LOCK_EX`)
+- **Data Storage**: `docs/data.csv` (flat-file, written with `flock` + `LOCK_EX`)
 
 ## Getting Started
 
@@ -41,7 +42,7 @@ cp config.php.example config.php
   [password hash](https://www.php.net/manual/en/function.password-hash.php)
   in `password_hash` (e.g. via `php -r "echo password_hash('secret', PASSWORD_DEFAULT);"`).
   If `password_hash` is set, it takes precedence and the plain `password` is ignored.
-- `favicon` – optional path or URL to your own favicon (e.g. `src/favicon.ico`).
+- `favicon` – optional path or URL to your own favicon (e.g. `docs/favicon.ico`).
   When empty, a built-in inline SVG favicon is used.
 
 Start local server
@@ -62,19 +63,19 @@ Any web server with PHP support works too, just point it at this directory.
 
 1. On page load, `index.php` fetches the doors from `GET api.php`
 2. When a door is opened, rated or commented on, the progress is saved via `POST api.php`
-3. `api.php` reads and writes `src/data.csv`, using `LOCK_EX` to protect against simultaneous writes
+3. `api.php` reads and writes `docs/data.csv`, using `LOCK_EX` to protect against simultaneous writes
 
 ## Customization
 
 ### Adding Videos
 
-Edit `src/data.csv` with the following format (`;` as separator). A door counts as opened when `opened_date` is not empty:
+Edit `docs/data.csv` with the following format (`;` as separator). A door counts as opened when `opened_date` is not empty:
 
 ```csv
 day;title;url;thumbnail;opened_date;rating;comment
-1;Video Title;https://example.com/video1;src/thumbnails/01.png;;;
+1;Video Title;https://example.com/video1;docs/thumbnails/01.png;;;
 ```
 
 ### Adding Thumbnails
 
-Place thumbnail images in `/src/thumbnails/` with filenames matching the `thumbnail` references (`01.png` to `24.png`).
+Place thumbnail images in `/docs/thumbnails/` with filenames matching the `thumbnail` references (`01.png` to `24.png`).

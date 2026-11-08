@@ -3,7 +3,7 @@
 // config.php is excluded from git via .gitignore.
 return [
     'password' => 'change-me',
-    // Optional: path or URL to your own favicon (e.g. 'src/favicon.ico').
+    // Optional: path or URL to your own favicon (e.g. 'docs/favicon.ico').
     // When empty, the built-in inline SVG favicon is used.
     'favicon' => '',
 ];
