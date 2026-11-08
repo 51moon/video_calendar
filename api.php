@@ -1,10 +1,10 @@
 <?php
-// api.php – reads and saves the video calendar data in src/data.csv
+// api.php – reads and saves the video calendar data in docs/data.csv
 declare(strict_types=1);
 require __DIR__ . '/auth.php';
 header('Content-Type: application/json; charset=utf-8');
 
-const DATA_FILE = __DIR__ . '/src/data.csv';
+const DATA_FILE = __DIR__ . '/docs/data.csv';
 const TOTAL_DOORS = 24;
 const CSV_HEADER = ['day', 'title', 'url', 'thumbnail', 'opened_date', 'rating', 'comment'];
 const CSV_SEPARATOR = ';';
@@ -17,7 +17,7 @@ if (!isLoggedIn()) {
     exit;
 }
 
-// Reads src/data.csv and returns one entry per door (1-24).
+// Reads docs/data.csv and returns one entry per door (1-24).
 // A door counts as opened when its opened_date is not empty.
 function loadDoors(): array {
     $doors = [];
@@ -26,7 +26,7 @@ function loadDoors(): array {
             'day'         => (string)$i,
             'title'       => 'Video ' . $i,
             'url'         => 'https://example.com/video' . $i,
-            'thumbnail'   => sprintf('src/thumbnails/%02d.png', $i),
+            'thumbnail'   => sprintf('docs/thumbnails/%02d.png', $i),
             'opened_date' => '',
             'rating'      => '',
             'comment'     => '',
@@ -61,7 +61,7 @@ function loadDoors(): array {
     return array_values($doors);
 }
 
-// Writes all doors back to src/data.csv. LOCK_EX protects against simultaneous writes.
+// Writes all doors back to docs/data.csv. LOCK_EX protects against simultaneous writes.
 function saveDoors(array $doors): void {
     $handle = fopen(DATA_FILE, 'c');
     if (!$handle) {
@@ -102,7 +102,7 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Video metadata (title/url/thumbnail) stays authoritative in src/data.csv;
+    // Video metadata (title/url/thumbnail) stays authoritative in docs/data.csv;
     // only opened_date, rating and comment are updated from the client.
     $doors = loadDoors();
     $indexByDay = [];
