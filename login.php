@@ -30,7 +30,7 @@ if (authPassword() === '' && (string)(authConfig()['password_hash'] ?? '') === '
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login – Video Calendar</title>
     <link rel="icon" href="<?= htmlspecialchars(faviconHref(), ENT_QUOTES, 'UTF-8') ?>">
-    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="docs/styles.css">
 </head>
 <body>
     <div class="login-form">

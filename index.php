@@ -11,7 +11,7 @@ requireLogin();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Calendar</title>
     <link rel="icon" href="<?= htmlspecialchars(faviconHref(), ENT_QUOTES, 'UTF-8') ?>">
-    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="docs/styles.css">
 </head>
 <body>
     <header class="page-header">
@@ -43,7 +43,7 @@ requireLogin();
                         day: (i + 1).toString(),
                         title: `Video ${i + 1}`,
                         url: `https://example.com/video${i + 1}`,
-                        thumbnail: `src/thumbnails/${String(i + 1).padStart(2, '0')}.png`,
+                        thumbnail: `docs/thumbnails/${String(i + 1).padStart(2, '0')}.png`,
                         opened_date: '',
                         rating: '',
                         comment: ''
@@ -111,7 +111,7 @@ requireLogin();
                 door.className = `door ${wasOpened ? 'opened' : ''} ${isLocked ? 'locked' : ''}`;
 
                 if (wasOpened) {
-                    const thumbnailPath = video.thumbnail || `src/thumbnails/${String(i + 1).padStart(2, '0')}.png`;
+                    const thumbnailPath = video.thumbnail || `docs/thumbnails/${String(i + 1).padStart(2, '0')}.png`;
                     const videoTitle = video.title || `Video ${i + 1}`;
                     const videoUrl = video.url || `https://example.com/video${i + 1}`;
 
