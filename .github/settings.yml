@@ -1,0 +1,3 @@
+repository:
+  description: "Video (Advent) Calendar — 24 doors with video previews, 0-10 star ratings & comments, sequential unlocking. Vanilla JS + single PHP script, flat-file CSV, password-protected."
+  topics: advent-of-code, video, videos, video-calendar, advent-calendar
