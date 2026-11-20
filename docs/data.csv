@@ -1,6 +1,6 @@
 day;title;url;thumbnail;opened_date;rating;comment
-1;"Mirror Lake Aurora";https://example.com/video1;docs/thumbnails/01.png;2026-11-01T12:00:00.000Z;4;"What a great video!"
-2;"Wild Fjord Night";https://example.com/video2;docs/thumbnails/02.png;2026-11-02T12:00:00.000Z;5;"Wow, this one is even better!"
+1;"Mirror Lake Aurora";https://example.com/video1;docs/thumbnails/01.png;2026-11-01T12:00:00.000Z;7;"What a great video!"
+2;"Wild Fjord Night";https://example.com/video2;docs/thumbnails/02.png;2026-11-02T12:00:00.000Z;9;"Wow, this one is even better!"
 3;"Forest Aurora Glow";https://example.com/video3;docs/thumbnails/03.png;;;
 4;"Moonlit Snow Hills";https://example.com/video4;docs/thumbnails/04.png;;;
 5;"Rocky Shore Glow";https://example.com/video5;docs/thumbnails/05.png;;;
