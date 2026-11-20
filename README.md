@@ -9,7 +9,7 @@ An interactive (advent) calendar for videos with rating functionality, built as 
 
 - 24-door advent calendar
 - Video previews with thumbnails
-- Rating system (1-5)
+- Rating system (0-10)
 - Comment field per video with save button
 - Sequential door opening (doors unlock one after another)
 - Data persistence via a CSV file

@@ -122,8 +122,8 @@ requireLogin();
                             <img src="${thumbnailPath}" alt="Preview for ${videoTitle}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23333%22 width=%22100%22 height=%22100%22/%3E%3Ctext fill=%22white%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EVideo ${i + 1}%3C/text%3E%3C/svg%3E';">
                         </a>
                         <div class="rating" id="rating-${i}">
-                            ${[1, 2, 3, 4, 5].map(n => `
-                                <button onclick="rateDoor(${i}, ${n})" ${doors[i].rating == n ? 'class="selected"' : ''}>${n}</button>
+                            ${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `
+                                <button onclick="rateDoor(${i}, ${n})" ${String(doors[i].rating) === String(n) ? 'class="selected"' : ''}>${n}</button>
                             `).join('')}
                         </div>
                         <div class="comment">
